@@ -1,12 +1,6 @@
 from codigo import Interface
-#from vingador import Vingador
 
 def main():
-    # Pré-cadastrados
-    #Vingador.lista_vingadores = [
-    #    Vingador("Thor", "Thor Odinson", "Deidade", ["Força", "Raio"], "Mjolnir", ["Arrogância"], 9000),
-    #    Vingador("Hulk", "Bruce Banner", "Meta-humano", ["Força", "Regeneração"], "Transformação", ["Raiva"], 10000)
-    #]
 
     while True:
         opcao = Interface.menu()
@@ -29,5 +23,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-    #código também 12345

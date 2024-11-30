@@ -10,7 +10,8 @@ class Database:
         self.user = getenv('BD_USER')
         self.password = getenv('BD_PSWD')
         self.database = getenv('BD_DATABASE')
- 
+        self.connection = None
+
     def connect(self):
         try:
             self.connection = mysql.connector.connect(
@@ -23,19 +24,35 @@ class Database:
             print("Conexão com o banco de dados realizada com sucesso")
         except Error as e:
             print(f"Erro ao conectar ao banco de dados: {e}")
-    
+            self.connection = None
+
     def disconnect(self):
-        self.connection.close()
-        print('Conexão com o banco de dados encerrada com sucesso')
+        if self.connection:
+            self.connection.close()
+            print('Conexão com o banco de dados encerrada com sucesso')
+        else:
+            print("Nenhuma conexão para fechar.")
 
     def execute_query(self, query, values=None):
+        if not self.connection:
+            raise Exception("Database connection not established. Call connect() first.")
+        
         try:
             self.cursor.execute(query, values)
             self.connection.commit()
             print('Query executada com sucesso')
             return self.cursor
         except Error as e:
-            print(f'Erro: {e}')
+            print(f'Erro ao executar a query: {e}')
             return None
+
+    def select(self, query):
+        if not self.connection:
+            raise Exception("Database connection not established. Call connect() first.")
         
-    #código
+        try:
+            self.cursor.execute(query)
+            return self.cursor.fetchall()
+        except Error as e:
+            print(f"Erro ao executar a query de seleção: {e}")
+            return None
