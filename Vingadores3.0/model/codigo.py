@@ -59,7 +59,11 @@ class Interface:
             query = "INSERT INTO heroi (nome_heroi, nome_real, categoria, poderes, poder_principal, fraquezas, nivel_forca) VALUES (%s, %s, %s, %s, %s, %s, %s)"
             values = (nome_heroi, nome_real, categoria, ', '.join(poderes), poder_principal, ', '.join(fraquezas), nivel_forca)
 
-            cursor = db.execute_query(query, values)
+            cursor = db.connection.cursor()
+            cursor.execute(query, values)
+
+            db.connection.commit()
+
             Vingador(nome_heroi, nome_real, categoria, poderes, poder_principal, fraquezas, nivel_forca)
 
         except Exception as e:
@@ -84,7 +88,7 @@ class Interface:
             else:
                 print(f'{"Nome do Herói".ljust(20)} | {"Nome Real".ljust(20)} | {"Categoria".ljust(15)} | '
                     f'{"Tornozeleira".ljust(15)} | {"Chip GPS"}')
-                print("-" * 80)
+                print("-" * 95)
                 for heroi in herois:
                     vingador = Vingador(*heroi[1:])
                     print(vingador)
@@ -103,6 +107,8 @@ class Interface:
         else:
             print("Vingador não encontrado.")
 
+        
+
     @staticmethod
     def acao_em_vingador(acao):
         nome = input("Digite o Nome do Herói ou Nome Real: ")
@@ -110,20 +116,6 @@ class Interface:
         if vingador:
             resultado = acao(vingador)
             print(resultado)
-
-            try:
-                db = Database()
-                db.connect()
-
-                query = "UPDATE heroi SET tornozeleira = %s, chip_gps = %s, convocado = %s WHERE heroi_id = %s"
-                values = (vingador.tornozeleira, vingador.chip_gps, vingador.convocado, vingador.heroi_id)
-                db.execute_query(query, values)
-
-            except Exception as e:
-                print(f"Erro ao atualizar vingador no banco de dados: {e}")
-            finally:
-                db.disconnect()
-
         else:
             print("Vingador não encontrado.")
 
@@ -131,19 +123,18 @@ class Interface:
             db = Database()
             db.connect()
 
-            motivo = input("Motivo da convocacao: ")
+
+            heroi_id = "SELECT heroi_id from heroi where nome_heroi = %s"
+            motivo = input("Motivo da convocação: ")
             data_convocacao = datetime.now()
-            data_comparecimento = input("Data de comparecimento (DD/MM/AAAA): ")
-            status = input("Status (Presente, ausente ou comparecido): ")
-
-            query = "INSERT INTO convocacao (motivo, data_convocacao, data_comparecimento, status) values (%s, %s, %s, %s)"
-            values = (motivo, data_convocacao, data_comparecimento, status)
-
             data_comparecimento = datetime.strptime(data_comparecimento, "%d/%m/%Y")
+            status = input("Status (Pendente, comparecido ou ausente): ")
+
+            query = "INSERT INTO convocacao (heroi_id, motivo, data_convocacao, data_comparecimento, status) values (%s, %s, %s, %s, %s)"
+            values = (heroi_id, motivo, data_convocacao, data_comparecimento, status)
 
             db.execute_query(query, values)
-
         except Exception as e:
-            print(f"Erro ao salvar vingador no banco de dados: {e}")
+            print(f'Erro: {e}')
         finally:
-            db.disconnect()
+            db.disconnect() 

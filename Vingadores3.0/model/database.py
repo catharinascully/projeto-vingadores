@@ -21,7 +21,7 @@ class Database:
                 database=self.database
             )
             self.cursor = self.connection.cursor()
-            print("Conexão com o banco de dados realizada com sucesso")
+            print("Conexão com o banco de dados realizada com sucesso\n")
         except Error as e:
             print(f"Erro ao conectar ao banco de dados: {e}")
             self.connection = None
@@ -49,12 +49,12 @@ class Database:
 
     def select(self, query):
         if not self.connection:
-            print("Database connection not established. Call connect() first.")
+            print("Não há conexão com o banco de dados")
             return None
 
         try:
             self.cursor.execute(query)
             return self.cursor.fetchall()
         except Error as e:
-            print(f"Erro ao executar a query de seleção: {e}")
+            print(f"Erro ao executar a query: {e}")
             return None
