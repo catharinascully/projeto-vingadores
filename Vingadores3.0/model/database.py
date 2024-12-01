@@ -35,7 +35,8 @@ class Database:
 
     def execute_query(self, query, values=None):
         if not self.connection:
-            raise Exception("Database connection not established. Call connect() first.")
+            print("Database não estabelecida")
+            return None
         
         try:
             self.cursor.execute(query, values)
@@ -48,8 +49,9 @@ class Database:
 
     def select(self, query):
         if not self.connection:
-            raise Exception("Database connection not established. Call connect() first.")
-        
+            print("Database connection not established. Call connect() first.")
+            return None
+
         try:
             self.cursor.execute(query)
             return self.cursor.fetchall()
