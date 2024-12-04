@@ -78,3 +78,5 @@ class Database:
         except Exception as e:
             print(f"Erro ao consultar herói no banco: {e}")
             return None
+        
+        #

@@ -18,3 +18,4 @@ def verificar_heroi_no_banco(nome_heroi):
     except Exception as e:
         print(f"Erro ao consultar herói no banco: {e}")
         return None
+#

@@ -208,3 +208,5 @@ class Interface:
             print(f"Ocorreu um erro: {e}")
         finally:
             db.disconnect()
+
+            #
