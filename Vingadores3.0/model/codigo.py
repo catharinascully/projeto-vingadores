@@ -1,8 +1,8 @@
-import os
+import os 
 from vingador import Vingador
 from database import Database
 from datetime import datetime
-
+from buscar_heroi import verificar_heroi_no_banco
 
 class Interface:
     @staticmethod
@@ -129,15 +129,12 @@ class Interface:
             db.connect()
 
             nome_heroi = input("Nome do herói que você deseja convocar: ")
-            query_heroi = "SELECT heroi_id FROM heroi WHERE nome_heroi = %s"
-            heroi_id_resultado = db.select(query_heroi, (nome_heroi,))
+            heroi_id = verificar_heroi_no_banco(nome_heroi)
 
-            if not heroi_id_resultado:
+            if not heroi_id:
                 print("Herói não encontrado")
                 return
                 
-            heroi_id = heroi_id_resultado[0][0]
-
             motivo = input("Motivo da convocação: ")
             data_convocacao = datetime.now()
                 
@@ -167,12 +164,7 @@ class Interface:
             db.connect()
 
             nome_heroi = input("Nome do herói que você quer prender: ")
-            query_heroi = "SELECT heroi_id FROM heroi WHERE nome_heroi = %s"
-            resultado_id_heroi = db.select(query_heroi, (nome_heroi,),)
-            if not resultado_id_heroi:
-                print("Herói não encontrado")
-                return
-            heroi_id_mandato = resultado_id_heroi[0][0]
+            heroi_id_mandato = verificar_heroi_no_banco(nome_heroi)
 
             motivo_mandato = input("Motivo do mandato: ")
             status = input("Status do mandato (ativo, cumprido ou cancelado): ")
@@ -196,12 +188,7 @@ class Interface:
             db.connect()
 
             nome_heroi = input("Nome do herói que você quer aplicar a tornozeleira: ")
-            query_heroi = "SELECT heroi_id FROM heroi WHERE nome_heroi = %s"
-            resultado_id_heroi = db.select(query_heroi, (nome_heroi,),)
-            if not resultado_id_heroi:
-                print("Herói não encontrado")
-                return
-            id_heroi = resultado_id_heroi[0][0]
+            id_heroi = verificar_heroi_no_banco(nome_heroi)
 
             status = input("Status da tornozeleira (ativo ou inativo): ")
             data_desativacao = input("Data de desativação (dd/mm/aaaa) ou aperte Enter para deixar em branco: ")
@@ -220,43 +207,3 @@ class Interface:
             print(f"Ocorreu um erro: {e}")
         finally:
             db.disconnect()
-
-    """@staticmethod
-    def aplicar_chip_gps():
-        try: 
-            db = Database()
-            db.connect()
-
-            nome_heroi = input("Nome do herói que você quer aplicar a tornozeleira: ")
-
-            query_heroi = "SELECT id_heroi FROM heroi WHERE nome = %s"
-            resultado_id_heroi = db.select(query_heroi, (nome_heroi,))
-            
-            if not resultado_id_heroi:
-                print("Herói não encontrado")
-                return
-            
-            id_heroi = resultado_id_heroi[0][0]
-
-            query_tornozeleira = "SELECT id_tornozeleira FROM tornozeleira WHERE id_heroi = %s"
-            resultado_id_tornozeleira = db.select(query_tornozeleira, (id_heroi,))
-            
-            if not resultado_id_tornozeleira:
-                print("Tornozeleira não encontrada para esse herói")
-                return
-            
-            id_tornozeleira = resultado_id_tornozeleira[0][0]
-
-            localizacao_atual = input("Localização atual do vingador: ")
-            ultima_localizacao = input("Última localização do vingador: ")
-
-            query = "INSERT INTO chip_gps (id_tornozeleira, localizacao_atual, ultima_localizacao) VALUES (%s, %s, %s)"
-            values = (id_tornozeleira, localizacao_atual, ultima_localizacao)
-            db.execute_query(query, values)
-
-            print("Localização salva com sucesso!")
-
-        except Exception as e:
-            print(f"Ocorreu um erro: {e}")
-        finally:
-            db.disconnect()"""
