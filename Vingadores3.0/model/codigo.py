@@ -201,6 +201,7 @@ class Interface:
             values = (id_heroi, status, data_desativacao)
             db.execute_query(query, values)
 
+
             print("A tornozeleira foi aplicada")
 
         except Exception as e:

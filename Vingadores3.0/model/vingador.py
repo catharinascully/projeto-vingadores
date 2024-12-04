@@ -37,22 +37,3 @@ class Vingador:
                 f'Tornozeleira: {"Aplicada" if self.tornozeleira else "Não Aplicada"}\n'
                 f'Chip GPS: {"Aplicado" if self.chip_gps else "Não Aplicado"}\n'
                 f'Convocado: {"Sim" if self.convocado else "Não"}')
- 
- 
-    def aplicar_tornozeleira(self):
-        if not self.convocado:
-            return f'{self.nome_heroi} precisa ser convocado antes de aplicar a tornozeleira.'
-        if self.tornozeleira:
-            return f'{self.nome_heroi} já está com a tornozeleira aplicada.'
-        self.tornozeleira = True
-        if self.nome_heroi in ["Thor", "Hulk"]:
-            return f'{self.nome_heroi} resistiu, mas a tornozeleira foi aplicada com sucesso.'
-        return f'Tornozeleira aplicada a {self.nome_heroi}.'
- 
-    def aplicar_chip_gps(self):
-        if not self.tornozeleira:
-            return f'{self.nome_heroi} precisa estar com a tornozeleira antes de aplicar o chip GPS.'
-        if self.chip_gps:
-            return f'Chip GPS já foi aplicado em {self.nome_heroi}.'
-        self.chip_gps = True
-        return f'Chip GPS aplicado a {self.nome_heroi}.'
