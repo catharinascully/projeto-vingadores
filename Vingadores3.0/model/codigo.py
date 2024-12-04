@@ -1,5 +1,4 @@
 import os
-from turtle import st
 from vingador import Vingador
 from database import Database
 from datetime import datetime
