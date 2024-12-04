@@ -23,3 +23,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+    #Falta Tornozeleira e Chip GPS, boa sorte :) !
