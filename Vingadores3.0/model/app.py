@@ -11,7 +11,7 @@ def main():
         elif opcao == "3":
             Interface.detalhes_vingador()
         elif opcao == "4":
-            Interface.acao_em_vingador(lambda v: v.convocar())
+            Interface.convocar()
         elif opcao == "5":
             Interface.acao_em_vingador(lambda v: v.aplicar_tornozeleira())
         elif opcao == "6":

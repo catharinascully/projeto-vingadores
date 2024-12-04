@@ -99,42 +99,66 @@ class Interface:
 
     @staticmethod
     def detalhes_vingador():
-        nome = input("Digite o Nome do Herói ou Nome Real: ")
-        vingador = next((v for v in Vingador.lista_vingadores if v.nome_heroi == nome or v.nome_real == nome), None)
-        if vingador:
-            print("\n=== Detalhes do Vingador ===")
-            print(vingador.detalhes())
-        else:
-            print("Vingador não encontrado.")
+        try:
+            nome = input("Digite o Nome do Herói ou Nome Real: ")
 
-        
+            db = Database()
+            db.connect()
 
+            query = "SELECT nome_heroi, nome_real, categoria, poderes, poder_principal, fraquezas, nivel_forca FROM heroi WHERE nome_heroi = %s OR nome_real = %s"
+
+            heroi_result = db.select(query, (nome, nome))
+
+            if heroi_result:
+                vingador = Vingador(
+                    heroi_result[0][0], heroi_result[0][1], heroi_result[0][2], heroi_result[0][3], heroi_result[0][4], 
+                    heroi_result[0][5], heroi_result[0][6]
+                )
+
+                print("\n=== Detalhes do Vingador ===")
+                print(vingador.detalhes())
+            else:
+                print("Vingador não encontrado.")
+        except Exception as e:
+            print(f"Ocorreu um erro: {e}")
+        finally:
+            db.disconnect()
+    
     @staticmethod
-    def acao_em_vingador(acao):
-        nome = input("Digite o Nome do Herói ou Nome Real: ")
-        vingador = next((v for v in Vingador.lista_vingadores if v.nome_heroi == nome or v.nome_real == nome), None)
-        if vingador:
-            resultado = acao(vingador)
-            print(resultado)
-        else:
-            print("Vingador não encontrado.")
-
+    def convocar():
         try:
             db = Database()
             db.connect()
 
+            nome_heroi = input("Nome do herói que você deseja convocar: ")
+            query_heroi = "SELECT heroi_id FROM heroi WHERE nome_heroi = %s"
+            heroi_id_resultado = db.select(query_heroi, (nome_heroi,))
 
-            heroi_id = "SELECT heroi_id from heroi where nome_heroi = %s"
+            if not heroi_id_resultado:
+                print("Herói não encontrado")
+                return
+                
+            heroi_id = heroi_id_resultado[0][0]
+
             motivo = input("Motivo da convocação: ")
             data_convocacao = datetime.now()
-            data_comparecimento = datetime.strptime(data_comparecimento, "%d/%m/%Y")
-            status = input("Status (Pendente, comparecido ou ausente): ")
+                
+            data_comparecimento_str = input("Data do comparecimento (dd/mm/aaaa) ou aperte Enter para deixar em branco: ")
+            if data_comparecimento_str:
+                data_comparecimento = datetime.strptime(data_comparecimento_str, "%d/%m/%Y")
+            else:
+                data_comparecimento = None
+                
+            status = input("Status (pendente, ausente ou comparecido): ")
 
-            query = "INSERT INTO convocacao (heroi_id, motivo, data_convocacao, data_comparecimento, status) values (%s, %s, %s, %s, %s)"
+            query = "INSERT INTO convocacao (heroi_id, motivo, data_convocacao, data_comparecimento, status) VALUES (%s, %s, %s, %s, %s)"
             values = (heroi_id, motivo, data_convocacao, data_comparecimento, status)
-
             db.execute_query(query, values)
+
+            print("Convocação realizada com sucesso!")
+
         except Exception as e:
-            print(f'Erro: {e}')
+            print(f"Ocorreu um erro: {e}")
         finally:
-            db.disconnect() 
+            db.disconnect()
+

@@ -1,4 +1,5 @@
 from database import Database
+from datetime import datetime
 
 class Vingador:
     lista_vingadores = []
@@ -10,14 +11,14 @@ class Vingador:
         DEIDADE = "Deidade"
         CATEGORIAS_VALIDAS = [HUMANO, META_HUMANO, ALIENIGENA, DEIDADE]
  
-    def __init__(self, nome_heroi, nome_real, categoria, poderes, poder_principal, fraquezas, nivel_de_forca):
+    def __init__(self, nome_heroi, nome_real, categoria, poderes, poder_principal, fraquezas, nivel_forca):
         self.nome_heroi = nome_heroi
         self.nome_real = nome_real
         self.categoria = categoria
         self.poderes = poderes
         self.poder_principal = poder_principal
         self.fraquezas = fraquezas
-        self.nivel_de_forca = nivel_de_forca
+        self.nivel_forca = nivel_forca
         self.tornozeleira = False
         self.chip_gps = False
         self.convocado = False
@@ -27,24 +28,19 @@ class Vingador:
                 f'{"Sim" if self.tornozeleira else "Não"} | {"Sim" if self.chip_gps else "Não"}')
  
     def detalhes(self):
-        poderes_str = ", ".join(self.poderes)
-        fraquezas_str = ", ".join(self.fraquezas)
+        poderes_str = (self.poderes)
+        fraquezas_str = (self.fraquezas)
         return (f'Nome do Herói: {self.nome_heroi}\n'
                 f'Nome Real: {self.nome_real}\n'
                 f'Categoria: {self.categoria}\n'
                 f'Poderes: {poderes_str}\n'
                 f'Poder Principal: {self.poder_principal}\n'
                 f'Fraquezas: {fraquezas_str}\n'
-                f'Nível de Força: {self.nivel_de_forca}\n'
+                f'Nível de Força: {self.nivel_forca}\n'
                 f'Tornozeleira: {"Aplicada" if self.tornozeleira else "Não Aplicada"}\n'
                 f'Chip GPS: {"Aplicado" if self.chip_gps else "Não Aplicado"}\n'
                 f'Convocado: {"Sim" if self.convocado else "Não"}')
  
-    def convocar(self):
-        if not self.convocado:
-            self.convocado = True
-            return f'{self.nome_heroi} foi convocado com sucesso.'
-        return f'{self.nome_heroi} já está convocado.'
  
     def aplicar_tornozeleira(self):
         if not self.convocado:

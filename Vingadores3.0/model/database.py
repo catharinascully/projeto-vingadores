@@ -47,13 +47,13 @@ class Database:
             print(f'Erro ao executar a query: {e}')
             return None
 
-    def select(self, query):
+    def select(self, query, values = None):
         if not self.connection:
             print("Não há conexão com o banco de dados")
             return None
 
         try:
-            self.cursor.execute(query)
+            self.cursor.execute(query, values)
             return self.cursor.fetchall()
         except Error as e:
             print(f"Erro ao executar a query: {e}")
