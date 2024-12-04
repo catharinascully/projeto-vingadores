@@ -1,6 +1,3 @@
-from database import Database
-from datetime import datetime
-
 class Vingador:
     lista_vingadores = []
  
