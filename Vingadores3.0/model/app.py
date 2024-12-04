@@ -13,9 +13,11 @@ def main():
         elif opcao == "4":
             Interface.convocar()
         elif opcao == "5":
-            Interface.acao_em_vingador(lambda v: v.aplicar_tornozeleira())
+            Interface.aplicar_tornozeleira()
         elif opcao == "6":
-            Interface.acao_em_vingador(lambda v: v.aplicar_chip_gps())
+            Interface.aplicar_chip_gps()
+        elif opcao == "7":
+            Interface.mandato_de_prisao()
         elif opcao == "0":
             print("Encerrando o sistema...")
             break

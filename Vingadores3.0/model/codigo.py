@@ -1,4 +1,5 @@
 import os
+from turtle import st
 from vingador import Vingador
 from database import Database
 from datetime import datetime
@@ -19,6 +20,7 @@ class Interface:
         print("4. Convocar Vingador")
         print("5. Aplicar Tornozeleira")
         print("6. Aplicar Chip GPS")
+        print("7. Mandato de prisão")
         print("0. Sair")
         opcao = input("Escolha uma opção: ")
         return opcao
@@ -99,7 +101,6 @@ class Interface:
 
     @staticmethod
     def detalhes_vingador():
-        try:
             nome = input("Digite o Nome do Herói ou Nome Real: ")
 
             db = Database()
@@ -119,9 +120,7 @@ class Interface:
                 print(vingador.detalhes())
             else:
                 print("Vingador não encontrado.")
-        except Exception as e:
-            print(f"Ocorreu um erro: {e}")
-        finally:
+
             db.disconnect()
     
     @staticmethod
@@ -162,3 +161,103 @@ class Interface:
         finally:
             db.disconnect()
 
+    @staticmethod
+    def mandato_de_prisao():
+        try: 
+            db = Database()
+            db.connect()
+
+            nome_heroi = input("Nome do herói que você quer prender: ")
+            query_heroi = "SELECT heroi_id FROM heroi WHERE nome_heroi = %s"
+            resultado_id_heroi = db.select(query_heroi, (nome_heroi,),)
+            if not resultado_id_heroi:
+                print("Herói não encontrado")
+                return
+            heroi_id_mandato = resultado_id_heroi[0][0]
+
+            motivo_mandato = input("Motivo do mandato: ")
+            status = input("Status do mandato (ativo, cumprido ou cancelado): ")
+
+            query = "INSERT INTO mandato_de_prisao (heroi_id_mandato, motivo_mandato, status) VALUES (%s, %s, %s)"
+            values = (heroi_id_mandato, motivo_mandato, status)
+            db.execute_query(query, values)
+
+            print("O mandato foi emitido")
+
+        except Exception as e:
+            print(f"Ocorreu um erro: {e}")
+        finally:
+            db.disconnect()
+        
+    
+    @staticmethod
+    def aplicar_tornozeleira():
+        try: 
+            db = Database()
+            db.connect()
+
+            nome_heroi = input("Nome do herói que você quer aplicar a tornozeleira: ")
+            query_heroi = "SELECT heroi_id FROM heroi WHERE nome_heroi = %s"
+            resultado_id_heroi = db.select(query_heroi, (nome_heroi,),)
+            if not resultado_id_heroi:
+                print("Herói não encontrado")
+                return
+            id_heroi = resultado_id_heroi[0][0]
+
+            status = input("Status da tornozeleira (ativo ou inativo): ")
+            data_desativacao = input("Data de desativação (dd/mm/aaaa) ou aperte Enter para deixar em branco: ")
+            if data_desativacao:
+                data_desativacao = datetime.strptime(data_desativacao, "%d/%m/%Y")
+            else:
+                data_desativacao = None
+
+            query = "INSERT INTO tornozeleira (id_heroi, status, data_desativacao) VALUES (%s, %s, %s)"
+            values = (id_heroi, status, data_desativacao)
+            db.execute_query(query, values)
+
+            print("A tornozeleira foi aplicada")
+
+        except Exception as e:
+            print(f"Ocorreu um erro: {e}")
+        finally:
+            db.disconnect()
+
+    """@staticmethod
+    def aplicar_chip_gps():
+        try: 
+            db = Database()
+            db.connect()
+
+            nome_heroi = input("Nome do herói que você quer aplicar a tornozeleira: ")
+
+            query_heroi = "SELECT id_heroi FROM heroi WHERE nome = %s"
+            resultado_id_heroi = db.select(query_heroi, (nome_heroi,))
+            
+            if not resultado_id_heroi:
+                print("Herói não encontrado")
+                return
+            
+            id_heroi = resultado_id_heroi[0][0]
+
+            query_tornozeleira = "SELECT id_tornozeleira FROM tornozeleira WHERE id_heroi = %s"
+            resultado_id_tornozeleira = db.select(query_tornozeleira, (id_heroi,))
+            
+            if not resultado_id_tornozeleira:
+                print("Tornozeleira não encontrada para esse herói")
+                return
+            
+            id_tornozeleira = resultado_id_tornozeleira[0][0]
+
+            localizacao_atual = input("Localização atual do vingador: ")
+            ultima_localizacao = input("Última localização do vingador: ")
+
+            query = "INSERT INTO chip_gps (id_tornozeleira, localizacao_atual, ultima_localizacao) VALUES (%s, %s, %s)"
+            values = (id_tornozeleira, localizacao_atual, ultima_localizacao)
+            db.execute_query(query, values)
+
+            print("Localização salva com sucesso!")
+
+        except Exception as e:
+            print(f"Ocorreu um erro: {e}")
+        finally:
+            db.disconnect()"""
