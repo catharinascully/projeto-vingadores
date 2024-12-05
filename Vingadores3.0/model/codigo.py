@@ -158,30 +158,6 @@ class Interface:
             db.disconnect()
 
     @staticmethod
-    def mandato_de_prisao():
-        try: 
-            db = Database()
-            db.connect()
-
-            nome_heroi = input("Nome do herói que você quer prender: ")
-            heroi_id_mandato = verificar_heroi_no_banco(nome_heroi)
-
-            motivo_mandato = input("Motivo do mandato: ")
-            status = input("Status do mandato (ativo, cumprido ou cancelado): ")
-
-            query = "INSERT INTO mandato_de_prisao (heroi_id_mandato, motivo_mandato, status) VALUES (%s, %s, %s)"
-            values = (heroi_id_mandato, motivo_mandato, status)
-            db.execute_query(query, values)
-
-            print("O mandato foi emitido")
-
-        except Exception as e:
-            print(f"Ocorreu um erro: {e}")
-        finally:
-            db.disconnect()
-        
-    
-    @staticmethod
     def aplicar_tornozeleira():
         try: 
             db = Database()
@@ -191,14 +167,21 @@ class Interface:
             id_heroi = verificar_heroi_no_banco(nome_heroi)
 
             status = input("Status da tornozeleira (ativo ou inativo): ")
+
+            data_ativacao = input("Data de ativação (dd/mm/aaaa) ou aperte Enter para deixar a data de hoje: ")
+            if data_ativacao:
+                data_ativacao = datetime.strptime(data_ativacao, "%d/%m/%Y")
+            else:
+                data_ativacao = datetime.now()
+            
             data_desativacao = input("Data de desativação (dd/mm/aaaa) ou aperte Enter para deixar em branco: ")
             if data_desativacao:
                 data_desativacao = datetime.strptime(data_desativacao, "%d/%m/%Y")
             else:
                 data_desativacao = None
 
-            query = "INSERT INTO tornozeleira (id_heroi, status, data_desativacao) VALUES (%s, %s, %s)"
-            values = (id_heroi, status, data_desativacao)
+            query = "INSERT INTO tornozeleira (id_heroi, status, data_ativacao, data_desativacao) VALUES (%s, %s, %s, %s)"
+            values = (id_heroi, status, data_ativacao, data_desativacao)
             db.execute_query(query, values)
 
 
@@ -209,4 +192,59 @@ class Interface:
         finally:
             db.disconnect()
 
-            #
+    @staticmethod
+    def aplicar_chip_gps():
+        try: 
+            db = Database()
+            db.connect()
+
+            nome_heroi = input("Nome do herói que você deseja informar a localização: ")
+            heroi_id_tornozeleira = verificar_heroi_no_banco(nome_heroi)
+
+            query_tornozeleira = "SELECT id_tornozeleira FROM tornozeleira WHERE id_heroi = %s"
+            resultado_tornozeleira = db.select(query_tornozeleira, (heroi_id_tornozeleira,))
+
+            if not resultado_tornozeleira:
+                print("Tornozeleira não encontrada para esse herói.")
+            else:
+                id_tornozeleira = resultado_tornozeleira[0][0]
+
+            localizacao_atual = input("Localização atual do vingaodr: ")
+            ultima_localizacao = input("Última localização do vingador: ")
+
+            query = "INSERT INTO chip_gps (localizacao_atual, ultima_localizacao, id_tornozeleira) VALUES (%s, %s, %s)"
+            values = (localizacao_atual, ultima_localizacao, id_tornozeleira)
+            db.execute_query(query, values)
+
+        except Exception as e:
+            print(f"Ocorreu um erro: {e}")
+        finally:
+            db.disconnect()
+
+    @staticmethod
+    def mandato_de_prisao():
+        try: 
+            db = Database()
+            db.connect()
+
+            nome_heroi = input("Nome do herói que você quer prender: ")
+            heroi_id_mandato = verificar_heroi_no_banco(nome_heroi)
+
+            motivo_mandato = input("Motivo do mandato: ")
+            status = input("Status do mandato (ativo, cumprido ou cancelado): ")
+            data_emissao = input("Data de emissão (dd/mm/aaaa) ou aperte Enter para deixar a data de hoje: ")
+            if data_emissao:
+                data_emissao = datetime.strptime(data_emissao, "%d/%m/%Y")
+            else:
+                data_emissao = datetime.now()
+
+            query = "INSERT INTO mandato_de_prisao (heroi_id_mandato, motivo_mandato, data_emissao, status) VALUES (%s, %s, %s, %s)"
+            values = (heroi_id_mandato, motivo_mandato, data_emissao, status)
+            db.execute_query(query, values)
+
+            print("O mandato foi emitido")
+
+        except Exception as e:
+            print(f"Ocorreu um erro: {e}")
+        finally:
+            db.disconnect()

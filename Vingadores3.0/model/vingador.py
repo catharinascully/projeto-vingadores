@@ -37,5 +37,3 @@ class Vingador:
                 f'Tornozeleira: {"Aplicada" if self.tornozeleira else "Não Aplicada"}\n'
                 f'Chip GPS: {"Aplicado" if self.chip_gps else "Não Aplicado"}\n'
                 f'Convocado: {"Sim" if self.convocado else "Não"}')
-    
-    #
