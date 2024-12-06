@@ -1,3 +1,5 @@
+from database import Database
+
 class Vingador:
     lista_vingadores = []
  
@@ -38,4 +40,28 @@ class Vingador:
                 f'Chip GPS: {"Aplicado" if self.chip_gps else "Não Aplicado"}\n'
                 f'Convocado: {"Sim" if self.convocado else "Não"}')
     
-    #
+    def procurar_tornozeleira(self):
+        db = Database()
+        db.connect()
+        try:
+            query = "SELECT id_heroi FROM tornozeleira WHERE id_heroi = (SELECT heroi_id FROM heroi WHERE nome_heroi = %s)"
+            resultado = db.select(query, (self.nome_heroi,))
+            self.tornozeleira = True if resultado else False
+        except Exception as e:
+            print(f"Erro ao verificar tornozeleira: {e}")
+            self.tornozeleira = False
+        finally:
+            db.disconnect()
+
+    def procurar_chip_gps(self):
+        db = Database()
+        db.connect()
+        try:
+            query = "SELECT id_tornozeleira FROM chip_gps WHERE id_tornozeleira = (SELECT id_tornozeleira FROM tornozeleira WHERE id_heroi = (SELECT heroi_id FROM heroi WHERE nome_heroi = %s))"
+            resultado = db.select(query, (self.nome_heroi,))
+            self.chip_gps = True if resultado else False
+        except Exception as e:
+            print(f"Erro ao verificar chip GPS: {e}")
+            self.chip_gps = False
+        finally:
+            db.disconnect()

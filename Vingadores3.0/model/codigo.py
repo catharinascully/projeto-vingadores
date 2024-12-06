@@ -100,27 +100,31 @@ class Interface:
 
     @staticmethod
     def detalhes_vingador():
-            nome = input("Digite o Nome do Herói ou Nome Real: ")
+        nome = input("Digite o Nome do Herói ou Nome Real: ")
 
-            db = Database()
-            db.connect()
+        db = Database()
+        db.connect()
 
-            query = "SELECT nome_heroi, nome_real, categoria, poderes, poder_principal, fraquezas, nivel_forca FROM heroi WHERE nome_heroi = %s OR nome_real = %s"
+        query = "SELECT nome_heroi, nome_real, categoria, poderes, poder_principal, fraquezas, nivel_forca FROM heroi WHERE nome_heroi = %s OR nome_real = %s"
 
-            heroi_result = db.select(query, (nome, nome))
+        heroi_result = db.select(query, (nome, nome))
 
-            if heroi_result:
-                vingador = Vingador(
-                    heroi_result[0][0], heroi_result[0][1], heroi_result[0][2], heroi_result[0][3], heroi_result[0][4], 
-                    heroi_result[0][5], heroi_result[0][6]
-                )
+        if heroi_result:
+            vingador = Vingador(
+                heroi_result[0][0], heroi_result[0][1], heroi_result[0][2], 
+                heroi_result[0][3], heroi_result[0][4], heroi_result[0][5], 
+                heroi_result[0][6]
+            )
 
-                print("\n=== Detalhes do Vingador ===")
-                print(vingador.detalhes())
-            else:
-                print("Vingador não encontrado.")
+            vingador.procurar_tornozeleira(nome)
+            vingador.procurar_chip_gps(nome)
 
-            db.disconnect()
+            print("\n=== Detalhes do Vingador ===")
+            print(vingador.detalhes())
+        else:
+            print("Vingador não encontrado.")
+
+        db.disconnect()
     
     @staticmethod
     def convocar():
