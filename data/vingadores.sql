@@ -105,31 +105,31 @@ INSERT INTO `heroi` VALUES (9,'Homem Aranha','Peter Parker','Meta-Humano','Teias
 UNLOCK TABLES;
 
 --
--- Table structure for table `mandato_de_prisao`
+-- Table structure for table `mandado_de_prisao`
 --
 
-DROP TABLE IF EXISTS `mandato_de_prisao`;
+DROP TABLE IF EXISTS `mandado_de_prisao`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `mandato_de_prisao` (
-  `id_mandato` int NOT NULL AUTO_INCREMENT,
-  `heroi_id_mandato` int NOT NULL,
-  `motivo_mandato` longtext NOT NULL,
+CREATE TABLE `mandado_de_prisao` (
+  `id_mandado` int NOT NULL AUTO_INCREMENT,
+  `heroi_id_mandado` int NOT NULL,
+  `motivo_mandado` longtext NOT NULL,
   `status` enum('Ativo','Cumprido','Cancelado') NOT NULL,
   `data_emissao` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id_mandato`),
-  KEY `heroi_id_mandato_idx` (`heroi_id_mandato`),
-  CONSTRAINT `heroi_id_mandato` FOREIGN KEY (`heroi_id_mandato`) REFERENCES `heroi` (`heroi_id`)
+  PRIMARY KEY (`id_mandado`),
+  KEY `heroi_id_mandato_idx` (`heroi_id_mandado`),
+  CONSTRAINT `heroi_id_mandato` FOREIGN KEY (`heroi_id_mandado`) REFERENCES `heroi` (`heroi_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `mandato_de_prisao`
+-- Dumping data for table `mandado_de_prisao`
 --
 
-LOCK TABLES `mandato_de_prisao` WRITE;
-/*!40000 ALTER TABLE `mandato_de_prisao` DISABLE KEYS */;
-/*!40000 ALTER TABLE `mandato_de_prisao` ENABLE KEYS */;
+LOCK TABLES `mandado_de_prisao` WRITE;
+/*!40000 ALTER TABLE `mandado_de_prisao` DISABLE KEYS */;
+/*!40000 ALTER TABLE `mandado_de_prisao` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -182,13 +182,13 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `apagar_dados_heroi`(
 )
 BEGIN
 	declare p_id_tornozeleira  INT;
-	declare p_id_heroi_mandato INT;
+	declare p_id_heroi_mandado INT;
     select id_tornozeleira into  p_id_tornozeleira from tornozeleira where id_heroi = p_id_heroi;
     delete from chip_gps where id_tornozeleira = p_id_tornozeleira;
     delete from tornozeleira where id_heroi = p_id_heroi;
     delete from convocacao where heroi_id = p_id_heroi;
-    select heroi_id_mandato into p_id_heroi_mandato from mandato_de_prisao where heroi_id_mandato = p_id_heroi;
-    delete from mandato_de_prisao where heroi_id_mandato = p_id_heroi;
+    select heroi_id_mandado into p_id_heroi_mandado from mandado_de_prisao where heroi_id_mandado = p_id_heroi;
+    delete from mandado_de_prisao where heroi_id_mandado = p_id_heroi;
     delete from heroi where heroi_id = p_id_heroi;
 END ;;
 DELIMITER ;
@@ -206,4 +206,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-06 13:54:33
+-- Dump completed on 2024-12-06 14:33:15
