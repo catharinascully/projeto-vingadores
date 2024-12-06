@@ -222,31 +222,29 @@ class Interface:
             db.disconnect()
 
     @staticmethod
-    def mandato_de_prisao():
+    def mandado_de_prisao():
         try: 
             db = Database()
             db.connect()
 
             nome_heroi = input("Nome do herói que você quer prender: ")
-            heroi_id_mandato = db.verificar_heroi_no_banco(nome_heroi)
+            heroi_id_mandado = db.verificar_heroi_no_banco(nome_heroi)
 
-            motivo_mandato = input("Motivo do mandato: ")
-            status = input("Status do mandato (ativo, cumprido ou cancelado): ")
+            motivo_mandado = input("Motivo do mandado: ")
+            status = input("Status do mandado (ativo, cumprido ou cancelado): ")
             data_emissao = input("Data de emissão (dd/mm/aaaa) ou aperte Enter para deixar a data de hoje: ")
             if data_emissao:
                 data_emissao = datetime.strptime(data_emissao, "%d/%m/%Y")
             else:
                 data_emissao = datetime.now()
 
-            query = "INSERT INTO mandato_de_prisao (heroi_id_mandato, motivo_mandato, data_emissao, status) VALUES (%s, %s, %s, %s)"
-            values = (heroi_id_mandato, motivo_mandato, data_emissao, status)
+            query = "INSERT INTO mandato_de_prisao (heroi_id_mandado, motivo_mandado, data_emissao, status) VALUES (%s, %s, %s, %s)"
+            values = (heroi_id_mandado, motivo_mandado, data_emissao, status)
             db.execute_query(query, values)
 
-            print("O mandato foi emitido")
+            print("O mandado foi emitido")
 
         except Exception as e:
             print(f"Ocorreu um erro: {e}")
         finally:
             db.disconnect()
-
-            #

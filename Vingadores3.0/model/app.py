@@ -17,7 +17,7 @@ def main():
         elif opcao == "6":
             Interface.aplicar_chip_gps()
         elif opcao == "7":
-            Interface.mandato_de_prisao()
+            Interface.mandado_de_prisao()
         elif opcao == "0":
             print("Encerrando o sistema...")
             break
@@ -25,6 +25,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-#
