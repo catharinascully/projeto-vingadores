@@ -115,9 +115,6 @@ class Interface:
                 heroi_result[0][6]
             )
 
-            vingador.tornozeleira
-            vingador.chip_gps
-
             print("\n=== Detalhes do Vingador ===")
             print(vingador.detalhes())
         else:
@@ -212,7 +209,7 @@ class Interface:
             else:
                 id_tornozeleira = resultado_tornozeleira[0][0]
 
-            localizacao_atual = input("Localização atual do vingaodr: ")
+            localizacao_atual = input("Localização atual do vingador: ")
             ultima_localizacao = input("Última localização do vingador: ")
 
             query = "INSERT INTO chip_gps (localizacao_atual, ultima_localizacao, id_tornozeleira) VALUES (%s, %s, %s)"
