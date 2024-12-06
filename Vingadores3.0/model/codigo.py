@@ -2,7 +2,6 @@ import os
 from vingador import Vingador
 from database import Database
 from datetime import datetime
-from buscar_heroi import verificar_heroi_no_banco
 
 class Interface:
     @staticmethod
@@ -72,7 +71,7 @@ class Interface:
         finally:
             db.disconnect()
 
-        print(f"Vingador(a) '{nome_heroi}' cadastrado com sucesso.")
+        print(f"Vingador(a) '{nome_heroi}' cadastrado com sucesso")
 
     @staticmethod
     def listar_vingadores():
@@ -116,8 +115,8 @@ class Interface:
                 heroi_result[0][6]
             )
 
-            vingador.procurar_tornozeleira(nome)
-            vingador.procurar_chip_gps(nome)
+            vingador.tornozeleira
+            vingador.chip_gps
 
             print("\n=== Detalhes do Vingador ===")
             print(vingador.detalhes())
@@ -133,7 +132,7 @@ class Interface:
             db.connect()
 
             nome_heroi = input("Nome do herói que você deseja convocar: ")
-            heroi_id = verificar_heroi_no_banco(nome_heroi)
+            heroi_id = db.verificar_heroi_no_banco(nome_heroi)
 
             if not heroi_id:
                 print("Herói não encontrado")
@@ -168,7 +167,7 @@ class Interface:
             db.connect()
 
             nome_heroi = input("Nome do herói que você quer aplicar a tornozeleira: ")
-            id_heroi = verificar_heroi_no_banco(nome_heroi)
+            id_heroi = db.verificar_heroi_no_banco(nome_heroi)
 
             status = input("Status da tornozeleira (ativo ou inativo): ")
 
@@ -203,7 +202,7 @@ class Interface:
             db.connect()
 
             nome_heroi = input("Nome do herói que você deseja informar a localização: ")
-            heroi_id_tornozeleira = verificar_heroi_no_banco(nome_heroi)
+            heroi_id_tornozeleira = db.verificar_heroi_no_banco(nome_heroi)
 
             query_tornozeleira = "SELECT id_tornozeleira FROM tornozeleira WHERE id_heroi = %s"
             resultado_tornozeleira = db.select(query_tornozeleira, (heroi_id_tornozeleira,))
@@ -232,7 +231,7 @@ class Interface:
             db.connect()
 
             nome_heroi = input("Nome do herói que você quer prender: ")
-            heroi_id_mandato = verificar_heroi_no_banco(nome_heroi)
+            heroi_id_mandato = db.verificar_heroi_no_banco(nome_heroi)
 
             motivo_mandato = input("Motivo do mandato: ")
             status = input("Status do mandato (ativo, cumprido ou cancelado): ")

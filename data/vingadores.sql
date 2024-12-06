@@ -61,7 +61,7 @@ CREATE TABLE `convocacao` (
   PRIMARY KEY (`id_convocacao`),
   KEY `heroi_id_idx` (`heroi_id`),
   CONSTRAINT `heroi_id` FOREIGN KEY (`heroi_id`) REFERENCES `heroi` (`heroi_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,7 +70,6 @@ CREATE TABLE `convocacao` (
 
 LOCK TABLES `convocacao` WRITE;
 /*!40000 ALTER TABLE `convocacao` DISABLE KEYS */;
-INSERT INTO `convocacao` VALUES (2,'Missão secreta','2024-12-04',NULL,'Pendente',6);
 /*!40000 ALTER TABLE `convocacao` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -91,7 +90,7 @@ CREATE TABLE `heroi` (
   `fraquezas` varchar(255) DEFAULT NULL,
   `nivel_forca` bigint DEFAULT NULL,
   PRIMARY KEY (`heroi_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -100,7 +99,6 @@ CREATE TABLE `heroi` (
 
 LOCK TABLES `heroi` WRITE;
 /*!40000 ALTER TABLE `heroi` DISABLE KEYS */;
-INSERT INTO `heroi` VALUES (6,'Capitão América','Steve Rogers','Humano','Força, agilidade, resistência','Escudo','Nenhuma notável',3150);
 /*!40000 ALTER TABLE `heroi` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -129,7 +127,6 @@ CREATE TABLE `mandato_de_prisao` (
 
 LOCK TABLES `mandato_de_prisao` WRITE;
 /*!40000 ALTER TABLE `mandato_de_prisao` DISABLE KEYS */;
-INSERT INTO `mandato_de_prisao` VALUES (1,6,'Cometeu crimes','Ativo','2024-12-04 11:24:31');
 /*!40000 ALTER TABLE `mandato_de_prisao` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -158,7 +155,6 @@ CREATE TABLE `tornozeleira` (
 
 LOCK TABLES `tornozeleira` WRITE;
 /*!40000 ALTER TABLE `tornozeleira` DISABLE KEYS */;
-INSERT INTO `tornozeleira` VALUES (1,'Ativo','2024-12-04 13:02:36',NULL,6);
 /*!40000 ALTER TABLE `tornozeleira` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -169,6 +165,35 @@ UNLOCK TABLES;
 --
 -- Dumping routines for database 'vingadores'
 --
+/*!50003 DROP PROCEDURE IF EXISTS `apagar_dados_heroi` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `apagar_dados_heroi`(
+	 IN p_id_heroi INT 
+)
+BEGIN
+	declare p_id_tornozeleira  INT;
+	declare p_id_heroi_mandato INT;
+    select id_tornozeleira into  p_id_tornozeleira from tornozeleira where id_heroi = p_id_heroi;
+    delete from chip_gps where id_tornozeleira = p_id_tornozeleira;
+    delete from tornozeleira where id_heroi = p_id_heroi;
+    delete from convocacao where heroi_id = p_id_heroi;
+    select heroi_id_mandato into p_id_heroi_mandato from mandato_de_prisao where heroi_id_mandato = p_id_heroi;
+    delete from mandato_de_prisao where heroi_id_mandato = p_id_heroi;
+    delete from heroi where heroi_id = p_id_heroi;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -179,4 +204,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-04 13:48:53
+-- Dump completed on 2024-12-06 11:22:19

@@ -60,7 +60,7 @@ class Database:
             return None
         
 
-    def verificar_heroi_no_banco(nome_heroi):
+    def verificar_heroi_no_banco(self, nome_heroi):
         try:
             db = Database()
             db.connect()
@@ -78,5 +78,3 @@ class Database:
         except Exception as e:
             print(f"Erro ao consultar herói no banco: {e}")
             return None
-        
-        #
