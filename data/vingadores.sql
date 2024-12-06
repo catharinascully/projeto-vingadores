@@ -25,14 +25,14 @@ DROP TABLE IF EXISTS `chip_gps`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `chip_gps` (
-  `id_chip_gps` int NOT NULL,
+  `id_chip_gps` int NOT NULL AUTO_INCREMENT,
   `localizacao_atual` varchar(255) DEFAULT NULL,
   `ultima_localizacao` varchar(255) DEFAULT NULL,
   `id_tornozeleira` int NOT NULL,
   PRIMARY KEY (`id_chip_gps`),
   KEY `chip_tornozeleira_idx` (`id_tornozeleira`),
   CONSTRAINT `chip_tornozeleira` FOREIGN KEY (`id_tornozeleira`) REFERENCES `tornozeleira` (`id_tornozeleira`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -61,7 +61,7 @@ CREATE TABLE `convocacao` (
   PRIMARY KEY (`id_convocacao`),
   KEY `heroi_id_idx` (`heroi_id`),
   CONSTRAINT `heroi_id` FOREIGN KEY (`heroi_id`) REFERENCES `heroi` (`heroi_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,6 +70,7 @@ CREATE TABLE `convocacao` (
 
 LOCK TABLES `convocacao` WRITE;
 /*!40000 ALTER TABLE `convocacao` DISABLE KEYS */;
+INSERT INTO `convocacao` VALUES (5,'Missão secreta','2024-12-06','2024-10-10','Comparecido',9);
 /*!40000 ALTER TABLE `convocacao` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -90,7 +91,7 @@ CREATE TABLE `heroi` (
   `fraquezas` varchar(255) DEFAULT NULL,
   `nivel_forca` bigint DEFAULT NULL,
   PRIMARY KEY (`heroi_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -99,6 +100,7 @@ CREATE TABLE `heroi` (
 
 LOCK TABLES `heroi` WRITE;
 /*!40000 ALTER TABLE `heroi` DISABLE KEYS */;
+INSERT INTO `heroi` VALUES (9,'Homem Aranha','Peter Parker','Meta-Humano','Teias, sentido aranha, agilidade','Sentido aranha','Danos físicos',4000),(10,'Pantera Negra ','T\'Challa','Meta-Humano','Agilidade, força sobre humana','Armadura','Pneumoultramicroscopicosilicovulcanoconiose',3000);
 /*!40000 ALTER TABLE `heroi` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -118,7 +120,7 @@ CREATE TABLE `mandato_de_prisao` (
   PRIMARY KEY (`id_mandato`),
   KEY `heroi_id_mandato_idx` (`heroi_id_mandato`),
   CONSTRAINT `heroi_id_mandato` FOREIGN KEY (`heroi_id_mandato`) REFERENCES `heroi` (`heroi_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -146,7 +148,7 @@ CREATE TABLE `tornozeleira` (
   PRIMARY KEY (`id_tornozeleira`),
   KEY `tornozeleira_heroi_idx` (`id_heroi`),
   CONSTRAINT `tornozeleira_heroi` FOREIGN KEY (`id_heroi`) REFERENCES `heroi` (`heroi_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -204,4 +206,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-06 11:22:19
+-- Dump completed on 2024-12-06 13:54:33
