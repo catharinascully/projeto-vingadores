@@ -5,5 +5,3 @@
 ## Objetivo
 
 O **Projeto Vingadores** tem como objetivo criar um sistema para cadastrar e gerenciar informações detalhadas sobre cada Vingador, convocar heróis para missões, armazenar e consultar dados importantes, como poderes e habilidades, entre outros.
-
-Este projeto ainda está em desenvolvimento.
